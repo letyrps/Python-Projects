@@ -1,0 +1,158 @@
+from art import *
+from data import *
+import time
+
+money = 0.0
+cost = 0
+
+
+def turn_on():
+    print(logo)
+    print('Turn the machine on to start! ')
+    turn = input('ON/OFF: ').lower()
+    if turn == 'ON':
+        print(espresso)
+        print(latte)
+        print(cappuccino)
+        numero = int(input('What would you like? 1, 2 ou 3: '))
+        return numero
+
+
+num = turn_on()
+if num == 1:
+    coffe = 'espresso'
+    cost = MENU['espresso']['cost']
+    print()
+elif num == 2:
+    coffe = 'latte'
+    cost = MENU['latte']['cost']
+    print()
+elif num == 3:
+    coffe = 'cappuccino'
+    cost = MENU['cappuccino']['cost']
+    print()
+
+
+def payment():
+    global cost
+    print('Please insert coins $$')
+    quarters = float(input('How many quarters? $0.25 '))
+    soma = quarters * 0.25
+    short = cost - soma
+    round(short, 2)
+    print(f' Money entered = {soma}')
+    print(f' Money short = {short}')
+    dimes = float(input('How many dimes? $0.10 '))
+    soma += dimes * 0.10
+    short = cost - soma
+    round(short, 2)
+    print(f' Money entered = {soma}')
+    print(f' Money short = {short}')
+    nickles = float(input('How many nickles? $0.05 '))
+    soma += nickles * 0.05
+    short = cost - soma
+    round(short, 2)
+    print(f' Money entered = {soma}')
+    print(f' Money short = {short}')
+    pennies = float(input('How many pennies? $0.01 '))
+    soma += pennies * 0.01
+    short = cost - soma
+    round(short, 2)
+    print(f' Money entered = {soma}')
+    print(f' Money short = {short}')
+
+    global money
+    if short < 0:
+        change = soma - cost
+        money += soma
+        print(f'Here is your change: {change}')
+        return True
+    elif short == 0:
+        print('No change')
+        return True
+    elif short > 0:
+        change = soma - cost
+        print(f'You are {change} dollars short! Sorry')
+        return False
+
+
+
+def make_coffe():
+    global go
+    global num
+    if num == 1:
+        if MENU["espresso"]["ingredients"]["water"] <= resources["water"]:
+            go = True
+            resources["water"] = resources["water"] - MENU["espresso"]["ingredients"]["water"]
+            print()
+            time.sleep(15)
+            print('Warming up watter')
+        else:
+            go = False
+
+        if MENU["espresso"]["ingredients"]["coffee"] <= resources["coffee"]:
+            resources["coffee"] = resources["coffee"] - MENU["espresso"]["ingredients"]["coffee"]
+            print()
+            time.sleep(15)
+            print("Coffe ready! Enjoy! ☕️ ")
+            go = False
+        else:
+            go = False
+
+    if num == 2:
+
+        if MENU["latte"]["ingredients"]["water"] <= resources["water"]:
+            go = True
+            resources["water"] = resources["water"] - MENU["latte"]["ingredients"]["water"]
+            print()
+            time.sleep(15)
+            print('Warming up watter')
+        else:
+            go = False
+
+        if MENU["latte"]["ingredients"]["milk"] <= resources["milk"]:
+            resources["milk"] = resources["milk"] - MENU["latte"]["ingredients"]["milk"]
+            print('Adding up milk')
+            time.sleep(15)
+            go = True
+        else:
+            go = False
+
+        if MENU["latte"]["ingredients"]["coffee"] <= resources["coffee"]:
+            resources["coffee"] = resources["coffee"] - MENU["latte"]["ingredients"]["coffee"]
+            print()
+            time.sleep(15)
+            print("Coffe ready! Enjoy! ☕️ ")
+            go = False
+        else:
+            go = False
+
+    if num == 3:
+
+        if MENU["cappuccino"]["ingredients"]["water"] <= resources["water"]:
+            go = True
+            resources["water"] = resources["water"] - MENU["cappuccino"]["ingredients"]["water"]
+            print()
+            time.sleep(15)
+            print('Warming up watter')
+        else:
+            go = False
+
+        if MENU["cappuccino"]["ingredients"]["milk"] <= resources["milk"]:
+            resources["milk"] = resources["milk"] - MENU["cappuccino"]["ingredients"]["milk"]
+            print('Adding up milk')
+            time.sleep(15)
+            go = True
+        else:
+            go = False
+
+        if MENU["cappuccino"]["ingredients"]["coffee"] <= resources["coffee"]:
+            resources["coffee"] = resources["coffee"] - MENU["cappuccino"]["ingredients"]["coffee"]
+            print()
+            time.sleep(15)
+            print("Coffe ready! Enjoy! ☕️ ")
+            go = False
+        else:
+            go = False
+
+make_coffe()
